@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bataille://schema/clause/v1",
+  "title": "Clause",
+  "description": "One annotated fragment in the dossier. Extracted from knowledge/*.md by extract_clauses.py. Tag vocabulary defined by knowledge-as-agent-blueprint.md, layer-spirit.md, and annotations-reach-outward.md.",
+  "type": "object",
+  "required": ["id", "source_file", "layers", "salience", "text", "anchor_passage"],
+  "additionalProperties": true,
+  "properties": {
+    "id": {"type": "string", "pattern": "^[a-z0-9-]+$", "description": "Stable kebab-case id (e.g. 'book-erotism-021')."},
+    "source_file": {"type": "string", "description": "Relative path to the knowledge file (e.g. 'knowledge/book-erotism.md')."},
+    "source_line": {"type": "integer", "minimum": 1},
+    "layers": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "enum": ["genetic", "persona", "purpose", "context"]}
+    },
+    "salience": {"type": "string", "enum": ["", "star", "double-star"]},
+    "outward_tags": {
+      "type": "array",
+      "description": "Outward-reaching tags from annotations-reach-outward.md.",
+      "items": {"type": "string", "enum": ["seed", "research-task", "kin", "install-deep"]}
+    },
+    "text": {"type": "string", "description": "The annotation body, in its native layer register."},
+    "anchor_passage": {"type": "string", "description": "The Bataille quote or passage the annotation is anchored to."},
+    "research_count": {"type": "integer", "minimum": 0, "description": "How many research-note passes have been produced for this clause."},
+    "pinned": {"type": "boolean", "description": "User-pinned for priority researcher attention."}
+  }
+}

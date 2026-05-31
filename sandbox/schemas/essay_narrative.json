@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bataille://schema/essay_narrative/v1",
+  "title": "Narrative essay (reader version)",
+  "description": "The captivating reader-first output of /api/read. Held as a thin metadata envelope around a markdown body — narrative is a bad fit for JSON-native field-shredding, but the envelope still gives us guarantees about hook, turn, end, and length.",
+  "type": "object",
+  "required": ["title", "hook", "body_md", "turn_signal", "ends_on"],
+  "additionalProperties": false,
+  "properties": {
+    "title": {"type": "string", "description": "Names what the lens has just shown."},
+    "hook": {"type": "string", "description": "The opening 1–2 sentences, repeated here so the UI can preview without parsing markdown. Must also appear at the top of body_md."},
+    "body_md": {"type": "string", "description": "The full essay as markdown. Lowercase exploratory voice; flowing prose, not lists; 600–1200 words; must contain at least one verbatim Bataille quote."},
+    "turn_signal": {"type": "string", "description": "One sentence: the moment in the essay where it turns — from describing what the lens reveals to pointing past Bataille at us. The model identifies its own turn so we can audit that the essay actually has one."},
+    "ends_on": {"type": "string", "enum": ["question", "image", "silence"], "description": "How the essay ends. Tidy resolution is forbidden."},
+    "word_count_estimate": {"type": "integer", "minimum": 400, "maximum": 1500}
+  }
+}

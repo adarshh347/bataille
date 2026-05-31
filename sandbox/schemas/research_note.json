@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bataille://schema/research_note/v1",
+  "title": "Research note",
+  "description": "One pass of background research on a single clause. The researcher accumulates these over time; each pass either deepens internally (cross-corpus echoes) or reaches outward (external case studies, kin, sources). A clause's research file is an append-only list of these.",
+  "type": "object",
+  "required": ["clause_id", "pass_kind", "pass_number", "lens", "findings", "next_seeds"],
+  "additionalProperties": false,
+  "properties": {
+    "clause_id": {
+      "type": "string",
+      "description": "ID of the clause this note is research for (e.g. 'book-erotism-021')."
+    },
+    "pass_kind": {
+      "type": "string",
+      "enum": ["internal-cross-corpus", "external-web", "kin-finding", "outward-projection", "install-deep-test", "synthesis"],
+      "description": "What kind of pass this is. Distinct kinds answer distinct questions; the UI groups them differently."
+    },
+    "pass_number": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Monotonic counter within this clause's research file. Pass N+1 must NOT repeat findings from passes 1..N — model is prompted with prior summaries to enforce."
+    },
+    "lens": {
+      "type": "string",
+      "description": "One-sentence restatement of the clause's lens, in the researcher's own words. Used to confirm the researcher is on-target before consuming output."
+    },
+    "findings": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "required": ["claim", "evidence", "confidence"],
+        "additionalProperties": false,
+        "properties": {
+          "claim": {"type": "string", "description": "One declarative sentence — the new thing this pass adds."},
+          "evidence": {"type": "string", "description": "Where the claim comes from: a passage (with page/line), a source URL, a cross-corpus echo (with file:line)."},
+          "confidence": {"type": "string", "enum": ["verified", "inferred", "uncertain", "from-memory"], "description": "From granular-verification.md tag vocabulary."},
+          "source_kind": {"type": "string", "enum": ["bataille-corpus", "web", "philosophical-kin", "comparative-tradition", "synthesis"], "description": "Where the evidence originated."},
+          "source_ref": {"type": "string", "description": "Stable reference: file:line or URL or page citation. Optional but strongly preferred."}
+        }
+      }
+    },
+    "next_seeds": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 5,
+      "description": "⊕ seeds for the next pass. Researcher proposes what to do next so the queue self-sustains.",
+      "items": {
+        "type": "object",
+        "required": ["kind", "directive"],
+        "additionalProperties": false,
+        "properties": {
+          "kind": {"type": "string", "enum": ["outward-projection", "kin-finding", "install-deep-test", "external-web", "internal-cross-corpus", "refute"]},
+          "directive": {"type": "string", "description": "One-line task for the next researcher pass."}
+        }
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "description": "Things the researcher itself is unsure about or wants flagged for human attention.",
+      "items": {"type": "string"}
+    }
+  }
+}

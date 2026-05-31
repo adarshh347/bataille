@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "bataille://schema/essay_structured/v1",
+  "title": "Structured essay (machine/memory version)",
+  "description": "The structured-prompt-style output of /api/read. JSON-native so the UI can render numbered findings with page cites without parsing markdown, and so the structured output can feed later passes deterministically.",
+  "type": "object",
+  "required": ["title", "lens_restatement", "findings", "conclusions", "cross_questions"],
+  "additionalProperties": false,
+  "properties": {
+    "title": {"type": "string", "description": "Names what the lens has just shown. Not a topic label; a thesis fragment."},
+    "lens_restatement": {"type": "string", "description": "One paragraph: the clause restated in the model's own words, so we can audit drift."},
+    "findings": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 7,
+      "items": {
+        "type": "object",
+        "required": ["claim", "quote", "page_ref"],
+        "additionalProperties": false,
+        "properties": {
+          "claim": {"type": "string"},
+          "quote": {"type": "string", "description": "Verbatim Bataille — must be quotable from the book.txt the model read."},
+          "page_ref": {"type": "string", "description": "Page or section reference."},
+          "lens_relation": {"type": "string", "description": "How this finding confirms / complicates / refutes the lens."}
+        }
+      }
+    },
+    "conclusions": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 5,
+      "items": {"type": "string", "description": "One declarative sentence each; new conclusions this lens has produced. Must not be tautological with the lens itself."}
+    },
+    "cross_questions": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4,
+      "items": {"type": "string", "description": "Questions the lens raises that this pass did not answer. Seeds for next research."}
+    },
+    "research_seeds": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 4,
+      "description": "⊕ seeds — what should be sent to the background researcher.",
+      "items": {
+        "type": "object",
+        "required": ["kind", "directive"],
+        "properties": {
+          "kind": {"type": "string", "enum": ["outward-projection", "kin-finding", "install-deep-test", "external-web", "internal-cross-corpus", "refute"]},
+          "directive": {"type": "string"}
+        }
+      }
+    }
+  }
+}
