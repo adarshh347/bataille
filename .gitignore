@@ -1,0 +1,26 @@
+# --- secrets / local config ---
+sandbox/.env
+.env
+.env.local
+
+# --- generated data stores ---
+sandbox/research.db
+sandbox/research.db-journal
+sandbox/research.db-wal
+sandbox/research.db-shm
+sandbox/research/*.jsonl
+
+# --- python ---
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# --- macos ---
+.DS_Store
+
+# --- editor ---
+.vscode/
+.idea/
+*.swp
