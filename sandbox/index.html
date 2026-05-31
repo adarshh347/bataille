@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bataille — Clause Sandbox</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <div class="title">Bataille · <span class="dim">Clause Sandbox</span></div>
+    <div class="search">
+      <input id="q" type="search" placeholder="search clauses, notes, sources…" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="filters">
+      <label><input type="checkbox" id="f-star2"> ★★ only</label>
+      <label><input type="checkbox" id="f-seed"> ⟳ seeds</label>
+      <button id="regen" class="ghost" title="re-run extract_clauses.py">↻ re-extract</button>
+    </div>
+    <div class="status" id="status"></div>
+  </header>
+  <main>
+    <nav id="blocks"></nav>
+    <section id="list"></section>
+    <article id="detail">
+      <div class="empty">select a clause from the middle column<br><span class="dim">— or filter from the left by block, salience, ⟳-seed, or book</span></div>
+    </article>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
